@@ -14,7 +14,6 @@ if __name__ == "__main__":
         for row in csv_reader:
             releases.append(row)
 
-
     for release in releases:
         command = f"git clone -b '{release['tag']}' --single-branch --depth 1 https://github.com/jquery/jquery.git {release['tag']}"
 

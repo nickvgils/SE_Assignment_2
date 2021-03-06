@@ -31,6 +31,11 @@ ENV NODE_OPTIONS=--max-old-space-size=4000
 
 WORKDIR /usr/jquery-data
 
+COPY detect_clones.py .
+
+RUN python detect_clones.py
+
+
 # Open a bash prompt, such that you can execute commands 
 # such as `cloc`. 
 ENTRYPOINT ["bash"]
