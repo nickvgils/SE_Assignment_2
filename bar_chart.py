@@ -1,5 +1,6 @@
 import csv
 import os
+import sys
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -15,7 +16,7 @@ def create_barchart(data, pngpath):
     plt.savefig(pngpath, dpi=1000)
 
 if __name__ == "__main__":
-    with open(r"C:\Users\sword\Documents\GitHub\SE_Assignment_2\lines.csv", mode='r') as csv_file:
+    with open(os.path.join(sys.path[0], "lines.csv"), mode='r') as csv_file:
         csv_reader = csv.reader(csv_file)
         next(csv_reader)
         data = [row for row in csv_reader]
@@ -24,5 +25,5 @@ if __name__ == "__main__":
         files = [int(x[0]) for x in sizes]
         loc = [int(x[1]) + int(x[2]) + int(x[3]) for x in sizes]
 
-        create_barchart(np.array(loc), r"C:\Users\sword\Documents\GitHub\SE_Assignment_2\barchart.png")
-        create_barchart(np.array(files), r"C:\Users\sword\Documents\GitHub\SE_Assignment_2\filesbarchart.png")
+        create_barchart(np.array(loc), os.path.join(sys.path[0], "barchart.png"))
+        create_barchart(np.array(files), os.path.join(sys.path[0], "filesbarchart.png"))

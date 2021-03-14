@@ -1,8 +1,10 @@
 import os
 import glob
 import pandas as pd
-path = r'C:\Users\sword\Documents\GitHub\SE_Assignment_2\out\jquery-data'                    # use your path
-all_files = glob.glob(os.path.join(path, "*.csv"))     # advisable to use os.path.join as this makes concatenation OS independent
+command = f'for d in * ; do (echo "$d" && cloc --include-lang=JavaScript --csv --out=$d.csv --match-d=\'src\' $d); done'
+print(f'Executing {command}')
+os.system(command)
+all_files = glob.glob('./*.csv')
 combined = pd.DataFrame(columns=('version', 'files', 'blank', 'comment', 'code'))
 
 # Version 1.2.1 < 1.10.1
@@ -20,4 +22,4 @@ for file in sorted_files:
     version = filename[:-4]
     combined = combined.append({'version' : version, 'files' : df_sum[0][0], 'blank' : df_sum[0][2], 'comment' : df_sum[0][3], 'code' : df_sum[0][4]}, ignore_index=True)
 
-combined.to_csv(r'C:\Users\sword\Documents\GitHub\SE_Assignment_2\lines.csv', index=False)
+combined.to_csv('lines.csv', index=False)

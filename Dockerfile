@@ -25,6 +25,12 @@ COPY jsinspect jsinspect
 
 RUN npm install -g ./jsinspect
 
+WORKDIR /
+
+ADD required_imports.txt /
+
+RUN pip install -r required_imports.txt
+
 # Increase the amount of memory nodejs can allocate, this
 # prevents JsInspect from running into the GC issues. 
 ENV NODE_OPTIONS=--max-old-space-size=4000
@@ -35,6 +41,11 @@ COPY detect_clones.py .
 
 RUN python detect_clones.py
 
+COPY combine_csv.py .
+
+RUN python combine_csv.py
+
+COPY compute_code_clones.py .
 
 # Open a bash prompt, such that you can execute commands 
 # such as `cloc`. 
