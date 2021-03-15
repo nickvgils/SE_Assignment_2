@@ -37,6 +37,8 @@ ENV NODE_OPTIONS=--max-old-space-size=4000
 
 WORKDIR /usr/jquery-data
 
+ADD in /usr/manual-clones
+
 COPY detect_clones.py .
 
 RUN python detect_clones.py

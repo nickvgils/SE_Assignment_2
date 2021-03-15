@@ -11,6 +11,6 @@ if __name__ == "__main__":
             Type 2: Use -I -L to match identifiers and literals for 'type 2'
             Type 3: Use a lower threshold as the default (30) to register 'type 3' clones """
 
-            command = f"jsinspect -I -L -t 25 in/base_snippet.js in/clone_type{x}_{y}.js"
+            command = f"jsinspect /usr/manual-clones/base_snippet.js /usr/manual-clones/clone_type{x}_{y}.js"
             print(f"Executing {command}")
             os.system(command)
