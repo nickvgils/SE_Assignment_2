@@ -12,7 +12,7 @@ csvpath = "similarities.csv"
 # Param versions is expected to be a tuple of two versions
 def getSimilarity(versions):
     # Stores the output of JsInspect inside a JSON file and then re-uses it
-    command = f'jsinspect -I -L -r json --ignore "sizzle|intro.js$|outro.js$|Test.js$" {" ".join([os.path.join(rootdir, v, "src") for v in versions])} > {outpath}'
+    command = f'jsinspect -I -L -r json --ignore "sizzle|test" {" ".join([os.path.join(rootdir, v, "src") for v in versions])} > {outpath}'
     print(f'Executing {command}')
     os.system(command)
     with open(outpath, 'r') as out:

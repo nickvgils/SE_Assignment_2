@@ -9,6 +9,8 @@ from distutils.version import LooseVersion
 linespath = os.path.join(sys.path[0], "lines.csv")
 similarpath = os.path.join(sys.path[0], "similarities.csv")
 coveragepath = os.path.join(sys.path[0], "coverage.csv")
+
+# Global variables
 loc = []
 similarities = []
 versions = []
@@ -28,9 +30,12 @@ with open(similarpath, mode='r') as sim_file:
     next(sim_reader)
     similarities = [row[1:] for row in sim_reader]
 
+# Calculates the coverage of our similarity metric
 coverage = [[
     float(y) / (loc[i] + loc[j]) for j, y in enumerate(x)
 ] for i, x in enumerate(similarities)]
+
+# Store the coverage in a .csv file
 with open(os.path.join(sys.path[0], "coverage.csv"), 'w+') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='\"')
     fields = ["version"] + versions
@@ -65,10 +70,12 @@ cmap = {
 colormap = colors.LinearSegmentedColormap('heatcolormap', segmentdata=cmap, N=256)
 fig, axes = plt.subplots(nrows=2, gridspec_kw={'height_ratios': [60, 1]})
 plt.sca(axes[0])
+
 # Coordinates range from zero to the cumulative sum of the lines of code
 coords = np.cumsum(np.append([0], np.array(loc)))
 mesh_x, mesh_y = np.meshgrid(coords, -coords)
 axes[0].pcolormesh(mesh_x, mesh_y, np.array(coverage).transpose(), cmap=colormap)
+
 # Put label in middle of the cells
 label_coords = np.array([(x + coords[i+1])/2 for i, x in enumerate(coords) if i < len(coords) - 1])
 # Filter coordinates for new versions
@@ -76,11 +83,12 @@ version_coords = [coords[i] for i, x in enumerate(versions) if x.count(".") <= 1
 axes[0].tick_params(length=0)
 plt.xticks(label_coords, versions, rotation=90, fontsize=3)
 plt.yticks(-label_coords, versions, rotation=0, fontsize=3)
+
 # Plot lines that give clear visualization of version seperation
-plt.hlines(-np.array(version_coords), min(coords), max(coords), linewidth=1)
 plt.hlines(-coords, min(coords), max(coords), linewidth=0.2)
-plt.vlines(np.array(version_coords), -min(coords), -max(coords), linewidth=1)
+plt.hlines(-np.array(version_coords), min(coords), max(coords), linewidth=1)
 plt.vlines(coords, -min(coords), -max(coords), linewidth=0.2)
+plt.vlines(np.array(version_coords), -min(coords), -max(coords), linewidth=1)
 
 # Subplot for gradient scale
 gradient = np.linspace(0, 1, 256)
@@ -93,4 +101,5 @@ plt.yticks([])
 fig.tight_layout()
 fig.set_size_inches(7, 8)
 
+# Save the heat map as image
 plt.savefig(os.path.join(sys.path[0], "heatmap.png"), dpi=1000)
